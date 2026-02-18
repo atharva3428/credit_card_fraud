@@ -82,10 +82,34 @@ Full exploratory data analysis framed as actionable business intelligence. Produ
 
 ---
 
+### 5. `dashboard.py` — Interactive Streamlit Dashboard
+A fully interactive, 5-page dashboard for live transaction monitoring and business storytelling.
+
+| Page | What It Shows |
+|------|--------------|
+| 📊 **Executive Overview** | KPI metrics, class imbalance donut, $ exposure by band, 24h fraud rate, amount boxplot, scorecard table |
+| 🕐 **Time Intelligence** | 24h volume vs fraud overlay, polar clock chart, Day 1 vs Day 2, fraud velocity histogram, cumulative arrivals |
+| 💰 **Amount Risk Profiling** | Fraud rate & $ exposure by band, interactive KDE density, log-transform comparison, treemap |
+| 🔬 **Feature Signals** | KS-statistic ranking for all 28 PCA features, interactive KDE + violin explorer, correlation bar chart |
+| 🚨 **Live Transaction Monitor** | Adjustable fraud score threshold, precision/recall metrics, flagged transaction table with progress bars, score vs amount scatter |
+
+**Key dashboard features:**
+- Global sidebar filters (day, hour range, max amount) applied across all pages
+- Rule-based fraud scoring model using V17, V14, V12, V10, Amount_log
+- Live precision/recall/exposure metrics that update with threshold slider
+- Colour-coded transaction table with Streamlit `ProgressColumn` for fraud scores
+
+---
+
 ## Requirements
 
 ```bash
-pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn scipy
+pip install -r requirements.txt
+```
+
+Or manually:
+```bash
+pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn scipy plotly streamlit
 ```
 
 ---
@@ -95,11 +119,14 @@ pip install pandas numpy scikit-learn imbalanced-learn matplotlib seaborn scipy
 Run scripts in order:
 
 ```bash
-python data_profiling.py        # Step 1: EDA report
+python data_profiling.py        # Step 1: Profile the raw data
 python data_cleaning.py         # Step 2: Clean & transform
-python data_wrangling.py        # Step 3: Feature engineering + SMOTE
-python eda_business_insights.py # Step 4: Business charts & insights
+python data_wrangling.py        # Step 3: Feature engineering + SMOTE splits
+python eda_business_insights.py # Step 4: Generate EDA charts (6 PNGs)
+streamlit run dashboard.py      # Step 5: Launch interactive dashboard
 ```
+
+The dashboard opens automatically at **http://localhost:8501**
 
 ---
 
@@ -110,7 +137,9 @@ credit_card_fraud/
 ├── data_profiling.py            # Data profiling report
 ├── data_cleaning.py             # Cleaning pipeline
 ├── data_wrangling.py            # Feature engineering & splits
-├── eda_business_insights.py     # EDA & business storytelling
+├── eda_business_insights.py     # EDA & business storytelling (6 charts)
+├── dashboard.py                 # Streamlit interactive dashboard (5 pages)
+├── requirements.txt             # Python dependencies
 ├── fig1_overview_dashboard.png  # Executive overview chart
 ├── fig2_time_intelligence.png   # Time-based fraud analysis
 ├── fig3_amount_risk.png         # Amount risk profiling
